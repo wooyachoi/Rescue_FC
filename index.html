@@ -2257,8 +2257,9 @@ nav.tabs.rescue-bottom-nav{display:none!important;height:0!important;min-height:
 <style id="player-card-customizer-styles">
   .card-shop-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;padding:18px 20px 22px;max-height:72vh;overflow:auto}
   .card-shop-grid .coach-card-shop{border-color:rgba(191,211,235,.42);background:linear-gradient(145deg,rgba(225,235,246,.08),rgba(9,16,27,.55));}
-  .rarity-preview-card[data-rarity-card="coach"] .player-photo-layer{top:20%;height:57.5%;}
-  .rarity-preview-card[data-rarity-card="coach"] .player-card-name{top:79%;color:#eef4ff;text-shadow:0 1px 8px #000;}
+  /* 카드 프레임별 안전 영역: 마켓/컬렉션/에디터/기존 구매 카드에 공통 적용 */
+  [data-rarity-card="coach"] .player-photo-layer{left:14.2%;top:21.0%;width:71.6%;height:52.0%;}
+  [data-rarity-card="coach"] .player-card-name{left:18%;top:78.5%;width:64%;height:6.8%;color:#eef4ff;text-shadow:0 1px 8px #000;}
   .coach-owned-box{border-top:1px solid rgba(255,255,255,.1);padding:18px 20px 22px;}
   .coach-owned-box h3{margin:0 0 4px;font-size:15px}.coach-owned-box p{margin:0 0 12px;color:#718294;font-size:10.5px}
   .coach-owned-card{max-width:180px}.coach-owned-card .owned-card-mini{box-shadow:0 0 22px rgba(102,170,255,.12)}
@@ -2271,12 +2272,21 @@ nav.tabs.rescue-bottom-nav{display:none!important;height:0!important;min-height:
   .player-photo-layer img{width:100%;height:100%;object-fit:cover;object-position:center center;display:block;transform:scale(1.012);transform-origin:center;}
   .player-photo-layer .photo-placeholder{position:relative;z-index:3}
   .photo-placeholder{text-align:center;color:#8191a3;font-weight:900;letter-spacing:1.5px}.photo-placeholder span{display:block;font-size:32px;line-height:1}.photo-placeholder small{font-size:8px}
-  .player-card-name{position:absolute;z-index:4;left:18%;top:77.2%;width:64%;height:7.5%;display:flex;align-items:center;justify-content:center;text-align:center;color:#f8e7b0;font-weight:900;font-size:clamp(9px,1.8vw,15px);letter-spacing:.4px;text-shadow:0 1px 4px rgba(0,0,0,.9);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 6px}
-  .rarity-preview-card[data-rarity-card="normal"] .player-photo-layer{left:12.5%;top:18%;width:75%;height:58.5%;clip-path:polygon(3% 0,97% 0,100% 3%,100% 97%,97% 100%,3% 100%,0 97%,0 3%)}
-  .rarity-preview-card[data-rarity-card="star"] .player-photo-layer,.rarity-preview-card[data-rarity-card="legend"] .player-photo-layer{left:13%;top:19%;width:74%;height:58%;clip-path:polygon(3.5% 0,96.5% 0,100% 4%,100% 96%,96.5% 100%,3.5% 100%,0 96%,0 4%)}
-  .rarity-preview-card[data-rarity-card="best"] .player-photo-layer{left:14%;top:21%;width:72%;height:55%;clip-path:polygon(4% 0,96% 0,100% 4.5%,100% 95.5%,96% 100%,4% 100%,0 95.5%,0 4.5%)}
-  .rarity-preview-card[data-rarity-card="coach"] .player-photo-layer{left:13%;top:20%;width:74%;height:57.5%;clip-path:polygon(4% 0,96% 0,100% 4%,100% 96%,96% 100%,4% 100%,0 96%,0 4%)}
-  .rarity-preview-card[data-rarity-card="best"] .player-card-name{top:76.7%}
+  .player-card-name{position:absolute;z-index:4;left:18%;top:77.2%;width:64%;height:7.5%;display:flex;align-items:center;justify-content:center;text-align:center;color:#f8e7b0;font-weight:900;font-size:clamp(9px,1.8vw,15px);letter-spacing:.4px;text-shadow:0 1px 4px rgba(0,0,0,.9);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 6px;box-sizing:border-box;background:rgba(4,9,15,.88);border-radius:3px;box-shadow:inset 0 0 8px rgba(0,0,0,.25)}
+  [data-rarity-card="normal"] .player-photo-layer{left:13.3%;top:20.0%;width:73.4%;height:52.8%;clip-path:polygon(3% 0,97% 0,100% 3%,100% 97%,97% 100%,3% 100%,0 97%,0 3%)}
+  [data-rarity-card="normal"] .player-card-name{left:18.5%;top:78.8%;width:63%;height:6.5%}
+  [data-rarity-card="star"] .player-photo-layer{left:14.0%;top:20.8%;width:72%;height:52.0%;clip-path:polygon(3.5% 0,96.5% 0,100% 4%,100% 96%,96.5% 100%,3.5% 100%,0 96%,0 4%)}
+  [data-rarity-card="star"] .player-card-name{left:18%;top:79.0%;width:64%;height:6.4%}
+  [data-rarity-card="legend"] .player-photo-layer{left:14.0%;top:21.1%;width:72%;height:51.7%;clip-path:polygon(3.5% 0,96.5% 0,100% 4%,100% 96%,96.5% 100%,3.5% 100%,0 96%,0 4%)}
+  [data-rarity-card="legend"] .player-card-name{left:18%;top:79.0%;width:64%;height:6.4%}
+  [data-rarity-card="best"] .player-photo-layer{left:15.0%;top:22.0%;width:70%;height:50.5%;clip-path:polygon(4% 0,96% 0,100% 4.5%,100% 95.5%,96% 100%,4% 100%,0 95.5%,0 4.5%)}
+  [data-rarity-card="best"] .player-card-name{left:18%;top:78.7%;width:64%;height:6.2%}
+  [data-rarity-card="coach"] .player-photo-layer{clip-path:polygon(4% 0,96% 0,100% 4%,100% 96%,96% 100%,4% 100%,0 96%,0 4%)}
+  [data-rarity-card="normal"] .player-card-name{background:rgba(36,5,8,.88)}
+  [data-rarity-card="star"] .player-card-name{background:rgba(4,28,18,.9)}
+  [data-rarity-card="legend"] .player-card-name{background:rgba(4,15,31,.9)}
+  [data-rarity-card="best"] .player-card-name{background:rgba(20,5,32,.9)}
+  [data-rarity-card="coach"] .player-card-name{background:rgba(28,38,49,.9)}
   .card-collection-dialog{width:min(1040px,94vw);max-height:88vh;overflow:auto;background:linear-gradient(145deg,#07111c,#0b1622);color:#eef3f8;border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:0;box-shadow:0 30px 90px rgba(0,0,0,.62)}
   .card-collection-dialog::backdrop{background:rgba(2,7,12,.78);backdrop-filter:blur(7px)}
   .collection-toolbar{display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02)}
@@ -2301,11 +2311,23 @@ nav.tabs.rescue-bottom-nav{display:none!important;height:0!important;min-height:
 .purchase-normal .purchase-effect-card{animation:normalReveal 1.7s cubic-bezier(.2,.8,.2,1) forwards}@keyframes normalReveal{0%{opacity:0;transform:scale(.78);filter:brightness(.2) saturate(.2)}45%{opacity:1;transform:scale(1.02);filter:brightness(1.15) saturate(1.15) drop-shadow(0 0 18px rgba(255,255,255,.65))}70%{transform:scale(1);filter:brightness(1.05) saturate(1.1) drop-shadow(0 0 30px rgba(255,255,255,.4))}100%{opacity:1;filter:none}}
 .purchase-star .purchase-effect-card{animation:starCardReveal 2.35s cubic-bezier(.2,.85,.2,1) forwards}@keyframes starCardReveal{0%,52%{opacity:0;transform:scale(.72);filter:brightness(.05) saturate(0)}65%{opacity:.55;transform:scale(.88);filter:brightness(.35) saturate(.2)}82%{opacity:1;transform:scale(1.035);filter:brightness(1.25) saturate(1.2) drop-shadow(0 0 34px rgba(255,255,255,.75))}100%{opacity:1;transform:scale(1);filter:none}}
 .purchase-legend .purchase-effect-card{animation:legendReveal 2.8s cubic-bezier(.18,.8,.2,1) forwards}@keyframes legendReveal{0%,58%{opacity:.12;transform:scale(.76);filter:brightness(.06) saturate(0)}72%{opacity:.8;transform:scale(1.015);filter:brightness(1.2) saturate(1.1) drop-shadow(0 0 26px rgba(255,215,100,.65))}86%{opacity:1;transform:scale(1.035);filter:brightness(1.45) saturate(1.3) drop-shadow(0 0 42px rgba(255,220,120,.9))}100%{opacity:1;transform:scale(1);filter:none}}
-.legend-letters{position:absolute;z-index:5;top:14%;left:50%;transform:translateX(-50%);display:flex;gap:2px;font-family:Georgia,serif;font-weight:900;font-size:clamp(22px,7vw,38px);letter-spacing:2px;color:#fff;text-shadow:0 0 14px rgba(255,220,120,.9);white-space:nowrap}.legend-letters span{opacity:0;transform:translateY(8px);animation:legendLetter .25s ease forwards}.legend-letters span:nth-child(1){animation-delay:.22s}.legend-letters span:nth-child(2){animation-delay:.34s}.legend-letters span:nth-child(3){animation-delay:.46s}.legend-letters span:nth-child(4){animation-delay:.58s}.legend-letters span:nth-child(5){animation-delay:.70s}.legend-letters span:nth-child(6){animation-delay:.82s}@keyframes legendLetter{to{opacity:1;transform:none}}
+.legend-letters{display:none;position:absolute;z-index:5;top:14%;left:50%;transform:translateX(-50%);gap:2px;font-family:Georgia,serif;font-weight:900;font-size:clamp(22px,7vw,38px);letter-spacing:2px;color:#fff;text-shadow:0 0 14px rgba(255,220,120,.9);white-space:nowrap}.legend-letters span{opacity:0;transform:translateY(8px)}.purchase-legend .legend-letters{display:flex}.purchase-legend .legend-letters span{animation:legendLetter .25s ease forwards}.legend-letters span:nth-child(1){animation-delay:.22s}.legend-letters span:nth-child(2){animation-delay:.34s}.legend-letters span:nth-child(3){animation-delay:.46s}.legend-letters span:nth-child(4){animation-delay:.58s}.legend-letters span:nth-child(5){animation-delay:.70s}.legend-letters span:nth-child(6){animation-delay:.82s}@keyframes legendLetter{to{opacity:1;transform:none}}
 .purchase-starburst{position:absolute;z-index:6;width:20px;height:20px;opacity:0;transform:scale(.1)}.purchase-starburst::before,.purchase-starburst::after{content:"✦";position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:54px;text-shadow:0 0 18px #fff,0 0 40px rgba(90,160,255,.9)}.purchase-starburst::after{transform:rotate(45deg);font-size:36px;color:#aee0ff}.purchase-star .purchase-starburst{animation:starEnter 2.35s ease forwards}@keyframes starEnter{0%,18%{opacity:0;transform:scale(.1)}35%{opacity:1;transform:scale(1.25)}48%{opacity:1;transform:scale(.7)}63%{opacity:0;transform:scale(.12) translateY(30px)}100%{opacity:0}}
 .purchase-lightning{position:absolute;z-index:7;inset:-15%;opacity:0;pointer-events:none;background:linear-gradient(115deg,transparent 39%,rgba(255,255,255,.95) 40%,rgba(160,205,255,.9) 41%,transparent 43%),linear-gradient(72deg,transparent 55%,rgba(255,255,255,.8) 56%,transparent 58%);filter:drop-shadow(0 0 16px #8fc7ff);mix-blend-mode:screen}.purchase-best .purchase-lightning{animation:thunderStrike 2.8s ease forwards}@keyframes thunderStrike{0%,43%{opacity:0;transform:translateY(-25%)}48%{opacity:1;transform:translateY(0)}52%{opacity:.15}55%{opacity:1}59%,100%{opacity:0}}
 .purchase-best .purchase-effect-card{animation:bestReveal 2.8s cubic-bezier(.16,.8,.2,1) forwards}@keyframes bestReveal{0%,42%{opacity:.08;transform:scale(.72);filter:brightness(.02) saturate(0)}49%{opacity:.35;transform:scale(.8);filter:brightness(.15) saturate(.1)}58%{opacity:1;transform:scale(1.04);filter:brightness(1.5) saturate(1.35) drop-shadow(0 0 42px rgba(255,255,255,.85))}75%{transform:scale(.995);filter:brightness(1.12) saturate(1.15) drop-shadow(0 0 28px rgba(255,220,120,.6))}100%{opacity:1;transform:scale(1);filter:none}}
-.purchase-complete{position:absolute;bottom:6%;left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:2px;color:rgba(255,255,255,.72);opacity:0;animation:completeFade 2.8s ease forwards;white-space:nowrap}@keyframes completeFade{0%,72%{opacity:0}82%,100%{opacity:1}}
+.purchase-complete{position:absolute;bottom:6%;left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:2px;color:rgba(255,255,255,.72);opacity:0;white-space:nowrap}.show .purchase-complete{animation:completeFade 2.8s ease forwards}@keyframes completeFade{0%,72%{opacity:0}82%,100%{opacity:1}}
+
+/* 등급별 구매 연출: NORMAL < STAR < LEGEND < ALL-TIME BEST, COACH는 실버/블루 */
+#cardPurchaseEffect .purchase-sparkles i{animation:none}
+.purchase-normal .purchase-sparkles i{animation:sparkFloat 1.15s ease-out 1}
+.purchase-star .purchase-sparkles i{animation:sparkFloat 1.35s ease-out 2}
+.purchase-legend .purchase-sparkles i{animation:sparkFloat 1.45s ease-out 2}
+.purchase-best .purchase-sparkles i{animation:sparkFloat 1.2s ease-out 3}
+.purchase-coach .purchase-sparkles i{animation:sparkFloat 1.55s ease-out 2;box-shadow:0 0 12px 3px #d8ebff}
+.purchase-star .purchase-effect-scene::before{content:"✦  ✧  ✦";position:absolute;z-index:6;top:20%;left:50%;transform:translateX(-50%);font-size:26px;letter-spacing:14px;color:#f4ffb8;text-shadow:0 0 14px #fff,0 0 28px rgba(134,255,116,.85);opacity:0;animation:starPrelude 2.35s ease forwards}
+@keyframes starPrelude{0%,12%{opacity:0;transform:translateX(-50%) scale(.6)}28%,45%{opacity:1;transform:translateX(-50%) scale(1)}58%,100%{opacity:0;transform:translateX(-50%) scale(.8) translateY(28px)}}
+.purchase-coach .purchase-effect-scene::before{content:"";position:absolute;z-index:8;inset:4% 13%;background:linear-gradient(110deg,transparent 38%,rgba(205,230,255,.72) 48%,rgba(255,255,255,.95) 50%,rgba(205,230,255,.7) 52%,transparent 62%);transform:translateX(-150%) skewX(-10deg);mix-blend-mode:screen;animation:coachShine 2.7s ease forwards;pointer-events:none}
+@keyframes coachShine{0%,20%{transform:translateX(-150%) skewX(-10deg);opacity:0}35%{opacity:1}70%{transform:translateX(150%) skewX(-10deg);opacity:.9}100%{transform:translateX(150%) skewX(-10deg);opacity:0}}
 </style>
 <script id="rescue-console-compat">
 (function(){
@@ -7172,7 +7194,7 @@ async function renderPlayerCollectionOnly(){
   const html=[];
   for(const card of inv){
     const photo=await getCardPhotoForCard(card);
-    html.push(`<article class="owned-card-item" data-owned-card="${escapeHtml(card.id)}"><div class="owned-card-mini"><div class="player-photo-layer">${photo?`<img src="${photo}" alt="선수 사진">`:'<div class="photo-placeholder"><span>+</span><small>PHOTO</small></div>'}</div><img class="card-frame-image" src="${getFrameSrc(card.rarity)}" alt="${CARD_FRAME_INFO[card.rarity]?.name||card.rarity} 카드 프레임"><div class="player-card-name">${escapeHtml(cardDisplayName(card))}</div></div><div class="owned-card-meta"><span>${CARD_FRAME_INFO[card.rarity]?.name||card.rarity} · ${escapeHtml(card.name||'미설정')}</span><button type="button" data-collection-edit="${escapeHtml(card.id)}">꾸미기</button></div></article>`);
+    html.push(`<article class="owned-card-item" data-owned-card="${escapeHtml(card.id)}"><div class="owned-card-mini" data-rarity-card="${escapeHtml(card.rarity)}"><div class="player-photo-layer">${photo?`<img src="${photo}" alt="선수 사진">`:'<div class="photo-placeholder"><span>+</span><small>PHOTO</small></div>'}</div><img class="card-frame-image" src="${getFrameSrc(card.rarity)}" alt="${CARD_FRAME_INFO[card.rarity]?.name||card.rarity} 카드 프레임"><div class="player-card-name">${escapeHtml(cardDisplayName(card))}</div></div><div class="owned-card-meta"><span>${CARD_FRAME_INFO[card.rarity]?.name||card.rarity} · ${escapeHtml(card.name||'미설정')}</span><button type="button" data-collection-edit="${escapeHtml(card.id)}">꾸미기</button></div></article>`);
   }
   box.innerHTML=html.join('');
   box.querySelectorAll('[data-collection-edit]').forEach(btn=>btn.addEventListener('click',()=>openCardEditor(btn.dataset.collectionEdit)));
@@ -7184,7 +7206,7 @@ async function renderOwnedCardCollection(){
   const html=[];
   for(const card of inv){
     const photo=await getCardPhotoForCard(card);
-    html.push(`<article class="owned-card-item" data-owned-card="${escapeHtml(card.id)}"><div class="owned-card-mini"><div class="player-photo-layer">${photo?`<img src="${photo}" alt="선수 사진">`:'<div class="photo-placeholder"><span>+</span><small>PHOTO</small></div>'}</div><img class="card-frame-image" src="${getFrameSrc(card.rarity)}" alt="${CARD_FRAME_INFO[card.rarity]?.name||card.rarity} 카드 프레임"><div class="player-card-name">${escapeHtml(cardDisplayName(card))}</div></div><div class="owned-card-meta"><span>${CARD_FRAME_INFO[card.rarity]?.name||card.rarity} · ${escapeHtml(card.name||'미설정')}</span><button type="button" data-owned-edit="${escapeHtml(card.id)}">꾸미기</button></div></article>`);
+    html.push(`<article class="owned-card-item" data-owned-card="${escapeHtml(card.id)}"><div class="owned-card-mini" data-rarity-card="${escapeHtml(card.rarity)}"><div class="player-photo-layer">${photo?`<img src="${photo}" alt="선수 사진">`:'<div class="photo-placeholder"><span>+</span><small>PHOTO</small></div>'}</div><img class="card-frame-image" src="${getFrameSrc(card.rarity)}" alt="${CARD_FRAME_INFO[card.rarity]?.name||card.rarity} 카드 프레임"><div class="player-card-name">${escapeHtml(cardDisplayName(card))}</div></div><div class="owned-card-meta"><span>${CARD_FRAME_INFO[card.rarity]?.name||card.rarity} · ${escapeHtml(card.name||'미설정')}</span><button type="button" data-owned-edit="${escapeHtml(card.id)}">꾸미기</button></div></article>`);
   }
   box.innerHTML=html.join('');
   box.querySelectorAll('[data-owned-edit]').forEach(btn=>btn.addEventListener('click',()=>openCardEditor(btn.dataset.ownedEdit)));
@@ -7196,7 +7218,7 @@ async function renderOwnedCoachCard(){
   const html=[];
   for(const card of inv){
     const photo=await getCardPhotoForCard(card);
-    html.push(`<article class="owned-card-item coach-owned-card" data-owned-card="${escapeHtml(card.id)}"><div class="owned-card-mini"><div class="player-photo-layer">${photo?`<img src="${photo}" alt="감독 사진">`:'<div class="photo-placeholder"><span>+</span><small>PHOTO</small></div>'}</div><img class="card-frame-image" src="${getFrameSrc('coach')}" alt="COACH 카드 프레임"><div class="player-card-name">${escapeHtml(cardDisplayName(card).replace('PLAYER NAME','COACH NAME'))}</div></div><div class="owned-card-meta"><span>COACH · ${escapeHtml(card.name||'미설정')}</span><button type="button" data-owned-coach-edit="${escapeHtml(card.id)}">꾸미기</button></div></article>`);
+    html.push(`<article class="owned-card-item coach-owned-card" data-owned-card="${escapeHtml(card.id)}"><div class="owned-card-mini" data-rarity-card="coach"><div class="player-photo-layer">${photo?`<img src="${photo}" alt="감독 사진">`:'<div class="photo-placeholder"><span>+</span><small>PHOTO</small></div>'}</div><img class="card-frame-image" src="${getFrameSrc('coach')}" alt="COACH 카드 프레임"><div class="player-card-name">${escapeHtml(cardDisplayName(card).replace('PLAYER NAME','COACH NAME'))}</div></div><div class="owned-card-meta"><span>COACH · ${escapeHtml(card.name||'미설정')}</span><button type="button" data-owned-coach-edit="${escapeHtml(card.id)}">꾸미기</button></div></article>`);
   }
   box.innerHTML=html.join('');
   box.querySelectorAll('[data-owned-coach-edit]').forEach(btn=>btn.addEventListener('click',()=>openCardEditor(btn.dataset.ownedCoachEdit)));
@@ -7228,8 +7250,9 @@ async function playCardPurchaseEffect(rarity){
   const overlay=document.getElementById('cardPurchaseEffect'), frame=document.getElementById('purchaseEffectFrame'), title=document.getElementById('purchaseEffectTitle'), sub=document.getElementById('purchaseEffectSub');
   if(!overlay||!frame)return;
   frame.src=getFrameSrc(rarity); title.textContent=rarity==='best'?'ALL-TIME BEST':rarity==='legend'?'LEGEND':rarity==='star'?'STAR':rarity==='coach'?'COACH':'NORMAL'; sub.textContent=rarity==='best'?'THE GREATEST':rarity==='legend'?'LEGENDARY CARD':rarity==='star'?'STAR CARD':rarity==='coach'?'MANAGER CARD':'PLAYER CARD';
+  overlay.className=''; overlay.setAttribute('aria-hidden','true'); void overlay.offsetWidth;
   overlay.className='show purchase-'+rarity; overlay.setAttribute('aria-hidden','false'); void overlay.offsetWidth;
-  const ms=rarity==='normal'?1850:rarity==='star'?2450:rarity==='legend'?2900:2900;
+  const ms=rarity==='normal'?1750:rarity==='star'?2450:rarity==='legend'?2900:rarity==='best'?3000:2750;
   await new Promise(r=>setTimeout(r,ms)); overlay.className=''; overlay.setAttribute('aria-hidden','true');
 }
 async function buyCardFrame(rarity){
@@ -7250,6 +7273,7 @@ async function buyCardFrame(rarity){
     if(Number.isFinite(Number(data?.rp_balance)))localStorage.setItem(rpBalanceStorageKey(),String(Number(data.rp_balance)));
     await loadServerCards(true);
     renderFootballHub(); updateCardShopUI();
+    closePlayerCardShop();
     await playCardPurchaseEffect(rarity);
     openCardEditor(card.id);
   }catch(e){
