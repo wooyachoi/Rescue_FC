@@ -2337,6 +2337,22 @@ nav.tabs.rescue-bottom-nav{display:none!important;height:0!important;min-height:
   });
 })();
 </script>
+
+<style id="rescue-card-safe-area-v2">
+/* 카드 프레임 내부의 네임플레이트를 사진이 침범하지 않도록 사진 영역을 등급별로 분리 */
+[data-rarity-card="normal"] .player-photo-layer{left:14.0%;top:20.5%;width:72.0%;height:46.5%;}
+[data-rarity-card="star"] .player-photo-layer{left:14.7%;top:21.0%;width:70.6%;height:46.0%;}
+[data-rarity-card="legend"] .player-photo-layer{left:14.8%;top:21.4%;width:70.4%;height:45.6%;}
+[data-rarity-card="best"] .player-photo-layer{left:15.7%;top:22.5%;width:68.6%;height:44.2%;}
+[data-rarity-card="coach"] .player-photo-layer{left:15.0%;top:21.5%;width:70.0%;height:45.5%;}
+[data-rarity-card] .player-photo-layer img{width:100%;height:100%;object-fit:cover;object-position:center center;transform:none;}
+[data-rarity-card="normal"] .player-card-name{top:78.8%;height:6.2%;}
+[data-rarity-card="star"] .player-card-name{top:79.0%;height:6.1%;}
+[data-rarity-card="legend"] .player-card-name{top:79.0%;height:6.1%;}
+[data-rarity-card="best"] .player-card-name{top:78.8%;height:6.0%;}
+[data-rarity-card="coach"] .player-card-name{top:78.5%;height:6.3%;}
+</style>
+
 </head>
 <body>
 
@@ -2841,29 +2857,6 @@ nav.tabs.rescue-bottom-nav{display:none!important;height:0!important;min-height:
         <button type="button" class="football-feature" id="footballKitBtn"><span class="feature-icon">◈</span><div><b>LOGO SHOP</b><small>클럽 로고 구매 · 준비 중</small></div><strong>→</strong></button>
         <button type="button" class="football-feature" id="footballRouletteBtn"><span class="feature-icon">🎰</span><div><b>RP ROULETTE</b><small>매일 5회 · RP 배율 도전</small></div><strong>→</strong></button>
       </div>
-
-      <section class="football-lower-grid">
-        <div class="football-panel best11-preview">
-          <div class="football-panel-title"><div><span>MY SQUAD</span><h3>BEST 11 <small>(예시)</small></h3></div><button type="button" class="small-outline" id="footballFormationBtn">4–3–3　변경 →</button></div>
-          <div class="mini-pitch">
-            <div class="pitch-line center-circle"></div><div class="pitch-line box-top"></div><div class="pitch-line box-bottom"></div>
-            <div class="mini-player p1">ST</div><div class="mini-player p2">LW</div><div class="mini-player p3">RW</div>
-            <div class="mini-player p4">CM</div><div class="mini-player p5">CAM</div><div class="mini-player p6">CM</div>
-            <div class="mini-player p7">LB</div><div class="mini-player p8">CB</div><div class="mini-player p9">CB</div><div class="mini-player p10">RB</div><div class="mini-player p11">GK</div>
-          </div>
-        </div>
-        <div class="football-panel rarity-panel">
-          <div class="football-panel-title"><div><span>PLAYER MARKET</span><h3>선수 등급 및 가격</h3></div></div>
-          <div class="rarity-row common" data-card-preview="normal"><b>NORMAL</b><strong>200 RP</strong></div>
-          <div class="rarity-row star" data-card-preview="star"><b>STAR</b><strong>500 RP</strong></div>
-          <div class="rarity-row legend" data-card-preview="legend"><b>LEGEND</b><strong>1,000 RP</strong></div>
-          <div class="rarity-row best" data-card-preview="best"><b>ALL-TIME BEST</b><strong>2,500 RP</strong></div>
-          <p class="football-note">구매한 카드 프레임에 직접 선수 사진과 이름을 넣어 <b>BEST 11</b>을 구성하세요.</p>
-        </div>
-        <div class="football-panel coach-preview">
-          <span class="coach-kicker">COACH MARKET</span><h3>COACH CARD</h3><p>은색 코치 프레임을 구매하고 감독 사진과 이름을 직접 설정하세요.</p><button class="football-cta" type="button" id="footballCoachHeroBtn">COACH SHOP · 3,000 RP</button>
-        </div>
-      </section>
     </div>
 
   </main>
@@ -7029,17 +7022,22 @@ document.querySelectorAll("[data-side-action]").forEach(btn=>btn.addEventListene
 
 /* ============ PLAYER COLLECTION + MY SQUAD ============ */
 const FORMATION_POSITIONS={
- "4-3-3":["LW","ST","RW","CM","CAM","CM","LB","CB","CB","RB","GK"],
- "4-2-3-1":["ST","LAM","CAM","RAM","LDM","RDM","LB","CB","CB","RB","GK"],
- "4-4-2":["ST","ST","LM","CM","CM","RM","LB","CB","CB","RB","GK"],
- "3-4-3":["LW","ST","RW","LM","CM","CM","RM","CB","CB","CB","GK"]
+ "4-3-3":["ST","LW","RW","LCM","CAM","RCM","LB","LCB","RCB","RB","GK"],
+ "4-2-3-1":["ST","LAM","CAM","RAM","LDM","RDM","LB","LCB","RCB","RB","GK"],
+ "4-4-2":["LST","RST","LM","LCM","RCM","RM","LB","LCB","RCB","RB","GK"],
+ "3-4-3":["LW","ST","RW","LM","LCM","RCM","RM","LCB","CB","RCB","GK"]
 };
 const FORMATION_COORDS={
- "4-3-3":[[50,9],[23,25],[77,25],[36,43],[50,38],[64,43],[14,67],[36,72],[64,72],[86,67],[50,90]],
- "4-2-3-1":[[50,10],[30,25],[50,22],[70,25],[38,43],[62,43],[14,68],[36,72],[64,72],[86,68],[50,90]],
- "4-4-2":[[38,16],[62,16],[13,39],[38,43],[62,43],[87,39],[14,68],[36,72],[64,72],[86,68],[50,90]],
- "3-4-3":[[23,25],[50,10],[77,25],[13,47],[37,43],[63,43],[87,47],[25,72],[50,76],[75,72],[50,91]]
+ "4-3-3":[[50,8],[24,25],[76,25],[34,45],[50,40],[66,45],[14,69],[37,74],[63,74],[86,69],[50,91]],
+ "4-2-3-1":[[50,8],[28,31],[50,31],[72,31],[39,52],[61,52],[14,70],[37,75],[63,75],[86,70],[50,91]],
+ "4-4-2":[[38,14],[62,14],[14,39],[38,45],[62,45],[86,39],[14,70],[37,75],[63,75],[86,70],[50,91]],
+ "3-4-3":[[24,24],[50,8],[76,24],[14,47],[38,48],[62,48],[86,47],[27,74],[50,78],[73,74],[50,92]]
 };
+
+function squadPositionLabel(pos){
+ const labels={LCM:'CM',RCM:'CM',LCB:'CB',RCB:'CB',LST:'ST',RST:'ST'};
+ return labels[pos]||pos;
+}
 let squadEditingSlot=null;
 function squadState(){const st=loadFootballState();if(!st.squad||typeof st.squad!=="object")st.squad={};return st;}
 function assignedCardIds(){const st=squadState();return Object.values(st.squad||{}).filter(Boolean);}
@@ -7065,14 +7063,14 @@ function renderSquad(){
    const id=st.squad[pos]||null, card=id?findCard(id):null, displayName=card?cardDisplayName(card):"";
    const slot=document.createElement("button");slot.type="button";slot.className="squad-slot";slot.style.left=coords[i][0]+"%";slot.style.top=coords[i][1]+"%";slot.dataset.position=pos;
    const frame=card?getFrameSrc(card.rarity):"";
-   slot.innerHTML=`<div class="squad-slot-card">${frame?`<img class="frame" src="${frame}" alt="">`:''}${card?`<div class="empty">${displayName?'':'+'}</div>`:'<div class="empty">+</div>'}${card?`<div class="squad-photo-holder"></div>`:''}</div><span class="squad-slot-name">${escapeHtml(displayName||"선수 선택")}</span><span class="squad-slot-pos">${pos}</span>`;
+   slot.innerHTML=`<div class="squad-slot-card">${frame?`<img class="frame" src="${frame}" alt="">`:''}${card?`<div class="empty">${displayName?'':'+'}</div>`:'<div class="empty">+</div>'}${card?`<div class="squad-photo-holder"></div>`:''}</div><span class="squad-slot-name">${escapeHtml(displayName||"선수 선택")}</span><span class="squad-slot-pos">${squadPositionLabel(pos)}</span>`;
    const holder=slot.querySelector('.squad-photo-holder');
    if(card&&holder){getCardPhotoForCard(card).then(photo=>{if(photo)holder.innerHTML=`<img class="photo" src="${photo}" alt="">`;});}
    slot.addEventListener("click",()=>openSquadPicker(pos)); pitch.appendChild(slot);
  });
  const placed=positions.filter(pos=>!!st.squad[pos]).length; if(countEl)countEl.textContent=placed+" / 11";
  if(list){
-   const rows=positions.filter(pos=>st.squad[pos]).map(pos=>{const c=findCard(st.squad[pos]);return `<div class="squad-list-row"><div class="squad-list-thumb" data-list-card="${st.squad[pos]}"></div><div><b>${escapeHtml(c?cardDisplayName(c):"PLAYER NAME")}</b><small>${pos} · ${c?CARD_FRAME_INFO[c.rarity]?.name||c.rarity:""}</small></div><button type="button" data-remove-slot="${pos}">제거</button></div>`}).join("");
+   const rows=positions.filter(pos=>st.squad[pos]).map(pos=>{const c=findCard(st.squad[pos]);return `<div class="squad-list-row"><div class="squad-list-thumb" data-list-card="${st.squad[pos]}"></div><div><b>${escapeHtml(c?cardDisplayName(c):"PLAYER NAME")}</b><small>${squadPositionLabel(pos)} · ${c?CARD_FRAME_INFO[c.rarity]?.name||c.rarity:""}</small></div><button type="button" data-remove-slot="${pos}">제거</button></div>`}).join("");
    list.innerHTML=rows||'<div class="squad-empty">아직 배치된 선수가 없습니다.<br>필드의 + 버튼을 눌러 선수를 선택하세요.</div>';
    list.querySelectorAll('[data-remove-slot]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();delete st.squad[b.dataset.removeSlot];saveFootballState(st);renderSquad();renderFootballHub();}));
    list.querySelectorAll('[data-list-card]').forEach(async el=>{const card=findCard(el.dataset.listCard);const photo=card?await getCardPhotoForCard(card):null;if(photo)el.innerHTML=`<img src="${photo}" alt="">`;});
@@ -7080,7 +7078,7 @@ function renderSquad(){
 }
 async function openSquadPicker(position){
  squadEditingSlot=position; const d=document.getElementById("squadPickerDialog"), grid=document.getElementById("squadPickerGrid"); if(!d||!grid)return;
- document.getElementById("squadPickerPosition").textContent=`${position} 포지션에 넣을 선수를 선택하세요.`;
+ document.getElementById("squadPickerPosition").textContent=`${squadPositionLabel(position)} 포지션에 넣을 선수를 선택하세요.`;
  const st=squadState(), assigned=assignedCardIds().filter(id=>id!==st.squad[position]), inv=getCardInventory();
  if(!inv.length){grid.innerHTML='<div class="squad-empty">구매한 선수 카드가 없습니다.<br>TRANSFER MARKET에서 프레임을 구매해 주세요.</div>';} else {
   grid.innerHTML='';
