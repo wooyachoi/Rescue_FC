@@ -6825,9 +6825,16 @@ async function refreshServerRP(){
 function rescueOpenDialog(id){
   const d=document.getElementById(id); if(!d)return false;
   try{
-    if(typeof d.showModal==='function'){ rescueOpenDialog("squadPickerDialog"); }
-    else { d.setAttribute('open',''); d.classList.add('rescue-dialog-open-fallback'); }
-  }catch(e){ d.setAttribute('open',''); d.classList.add('rescue-dialog-open-fallback'); }
+    if(typeof d.showModal==='function'){
+      if(!d.open)d.showModal();
+    }else{
+      d.setAttribute('open','');
+      d.classList.add('rescue-dialog-open-fallback');
+    }
+  }catch(e){
+    d.setAttribute('open','');
+    d.classList.add('rescue-dialog-open-fallback');
+  }
   return true;
 }
 function rescueCloseDialog(id){
@@ -6991,7 +6998,6 @@ document.getElementById("footballCollectionBtn")?.addEventListener("click",openP
 document.getElementById("footballShopBtn")?.addEventListener("click",openPlayerCardShop);
 document.getElementById("footballKitBtn")?.addEventListener("click",()=>alert("LOGO SHOP은 다음 단계에서 로고 이미지와 구매 시스템을 연결할 예정입니다."));
 document.getElementById("footballRouletteBtn")?.addEventListener("click",playFootballRoulette);
-document.getElementById("footballCoachBtn")?.addEventListener("click",openPlayerCardShop);
 document.getElementById("footballCoachHeroBtn")?.addEventListener("click",()=>openPlayerCardShop("coach"));
 document.getElementById("footballFormationBtn")?.addEventListener("click",openFormationSelector);
 
@@ -7015,14 +7021,16 @@ const FORMATION_COORDS={
 let squadEditingSlot=null;
 function squadState(){const st=loadFootballState();if(!st.squad||typeof st.squad!=="object")st.squad={};return st;}
 function assignedCardIds(){const st=squadState();return Object.values(st.squad||{}).filter(Boolean);}
-function openSquadEditor(){
+async function openSquadEditor(){
  const d=document.getElementById("squadDialog"); if(!d)return;
+ try{await loadServerCards(true);}catch(e){console.warn("Squad card refresh skipped",e);}
  const st=squadState();document.getElementById("squadFormationSelect").value=st.formation||"4-3-3";
  renderSquad(); rescueOpenDialog("squadDialog");
 }
 async function openPlayerCollection(){
  const d=document.getElementById("playerCollectionDialog");
  if(!d)return;
+ try{await loadServerCards(true);}catch(e){console.warn("Collection card refresh skipped",e);}
  await renderPlayerCollectionOnly();
  rescueOpenDialog("playerCollectionDialog");
 }
@@ -7160,7 +7168,7 @@ async function renderPlayerCollectionOnly(){
   if(!box)return;
   const inv=getCardInventory();
   if(count)count.textContent=`${inv.length} CARD${inv.length===1?'':'S'}`;
-  if(!inv.length){box.innerHTML='<div class="owned-card-empty">아직 구매한 선수 카드가 없습니다.<br><small>PLAYER SHOP에서 프레임을 구매하면 이곳에 표시됩니다.</small></div>';return;}
+  if(!inv.length){box.innerHTML='<div class="owned-card-empty">아직 구매한 선수 카드가 없습니다.<br><small>TRANSFER MARKET에서 프레임을 구매하면 이곳에 표시됩니다.</small></div>';return;}
   const html=[];
   for(const card of inv){
     const photo=await getCardPhotoForCard(card);
@@ -7207,11 +7215,12 @@ async function hydrateCardStages(){
   await renderOwnedCardCollection();
   await renderOwnedCoachCard();
 }
-function openPlayerCardShop(focusRarity=null){
+async function openPlayerCardShop(focusRarity=null){
   const d=document.getElementById('playerCardPreviewDialog'); if(!d)return;
-  rescueOpenDialog('playerCardPreviewDialog');
+  try{await loadServerCards(true);}catch(e){console.warn('Transfer market card refresh skipped',e);}
   updateCardShopUI();
-  hydrateCardStages();
+  await hydrateCardStages();
+  rescueOpenDialog('playerCardPreviewDialog');
   if(focusRarity)requestAnimationFrame(()=>document.querySelector(`[data-rarity-card="${focusRarity}"]`)?.scrollIntoView({behavior:'smooth',block:'center'}));
 }
 function closePlayerCardShop(){rescueCloseDialog('playerCardPreviewDialog');}
