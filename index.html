@@ -1034,6 +1034,9 @@
 
 
   dialog.rescue-dialog-open-fallback, dialog.card-preview-dialog.rescue-dialog-open-fallback, dialog.card-editor-dialog.rescue-dialog-open-fallback{display:block;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:100000;}
+
+#footballRouletteBtn.daily-limit{opacity:.58!important;filter:saturate(.55)}
+#footballRouletteBtn.daily-limit small{color:#ff8794!important;font-weight:900!important}
 </style>
 
 <style id="rescue-v9-tabs-fix">
@@ -2303,7 +2306,16 @@ nav.tabs.rescue-bottom-nav{display:none!important;height:0!important;min-height:
 .purchase-lightning{position:absolute;z-index:7;inset:-15%;opacity:0;pointer-events:none;background:linear-gradient(115deg,transparent 39%,rgba(255,255,255,.95) 40%,rgba(160,205,255,.9) 41%,transparent 43%),linear-gradient(72deg,transparent 55%,rgba(255,255,255,.8) 56%,transparent 58%);filter:drop-shadow(0 0 16px #8fc7ff);mix-blend-mode:screen}.purchase-best .purchase-lightning{animation:thunderStrike 2.8s ease forwards}@keyframes thunderStrike{0%,43%{opacity:0;transform:translateY(-25%)}48%{opacity:1;transform:translateY(0)}52%{opacity:.15}55%{opacity:1}59%,100%{opacity:0}}
 .purchase-best .purchase-effect-card{animation:bestReveal 2.8s cubic-bezier(.16,.8,.2,1) forwards}@keyframes bestReveal{0%,42%{opacity:.08;transform:scale(.72);filter:brightness(.02) saturate(0)}49%{opacity:.35;transform:scale(.8);filter:brightness(.15) saturate(.1)}58%{opacity:1;transform:scale(1.04);filter:brightness(1.5) saturate(1.35) drop-shadow(0 0 42px rgba(255,255,255,.85))}75%{transform:scale(.995);filter:brightness(1.12) saturate(1.15) drop-shadow(0 0 28px rgba(255,220,120,.6))}100%{opacity:1;transform:scale(1);filter:none}}
 .purchase-complete{position:absolute;bottom:6%;left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:2px;color:rgba(255,255,255,.72);opacity:0;animation:completeFade 2.8s ease forwards;white-space:nowrap}@keyframes completeFade{0%,72%{opacity:0}82%,100%{opacity:1}}
-</style></head>
+</style>
+<script id="rescue-console-compat">
+(function(){
+  var c=window.console=window.console||{};
+  ['log','info','warn','error','debug'].forEach(function(k){
+    if(typeof c[k]!=='function') c[k]=function(){};
+  });
+})();
+</script>
+</head>
 <body>
 
 <div id="loginScreen">
@@ -2802,9 +2814,9 @@ nav.tabs.rescue-bottom-nav{display:none!important;height:0!important;min-height:
       <div class="football-section-grid football-feature-grid">
         <button type="button" class="football-feature feature-team" id="footballTeamBtn"><span class="feature-icon">♛</span><div><b>MY BEST 11</b><small>나만의 팀 구성</small></div><strong>→</strong></button>
         <button type="button" class="football-feature" id="footballCollectionBtn"><span class="feature-icon">▣</span><div><b>PLAYER COLLECTION</b><small>보유 선수 확인</small></div><strong>→</strong></button>
-        <button type="button" class="football-feature" id="footballShopBtn"><span class="feature-icon">🛒</span><div><b>PLAYER SHOP</b><small>전설의 선수 영입</small></div><strong>→</strong></button>
-        <button type="button" class="football-feature" id="footballCoachBtn"><span class="feature-icon">♙</span><div><b>COACH SHOP</b><small>감독 영입</small></div><strong>→</strong></button>
-        <button type="button" class="football-feature" id="footballKitBtn"><span class="feature-icon">👕</span><div><b>KIT SHOP</b><small>나만의 유니폼</small></div><strong>→</strong></button>
+        <button type="button" class="football-feature" id="footballShopBtn"><span class="feature-icon">🛒</span><div><b>TRANSFER MARKET</b><small>선수 · 코치 카드 영입</small></div><strong>→</strong></button>
+        
+        <button type="button" class="football-feature" id="footballKitBtn"><span class="feature-icon">◈</span><div><b>LOGO SHOP</b><small>클럽 로고 구매 · 준비 중</small></div><strong>→</strong></button>
         <button type="button" class="football-feature" id="footballRouletteBtn"><span class="feature-icon">🎰</span><div><b>RP ROULETTE</b><small>매일 5회 · RP 배율 도전</small></div><strong>→</strong></button>
       </div>
 
@@ -2872,13 +2884,13 @@ nav.tabs.rescue-bottom-nav{display:none!important;height:0!important;min-height:
       <div><span class="dialog-kicker">RESCUE FC · MY COLLECTION</span><h2 id="playerCollectionTitle">PLAYER COLLECTION</h2><p id="playerCollectionSubtitle">구매한 선수 카드만 표시됩니다.</p></div>
       <button type="button" class="card-preview-close" id="playerCollectionClose" aria-label="닫기">×</button>
     </div>
-    <div class="collection-toolbar"><strong id="playerCollectionCount">0 CARDS</strong><span>PLAYER SHOP에서 구매한 프레임만 여기에 보관됩니다.</span></div>
+    <div class="collection-toolbar"><strong id="playerCollectionCount">0 CARDS</strong><span>TRANSFER MARKET에서 구매한 프레임만 여기에 보관됩니다.</span></div>
     <section class="card-inventory collection-only"><div class="owned-card-list" id="playerCollectionList"><div class="owned-card-empty">구매한 선수 카드가 없습니다.</div></div></section>
   </dialog>
 
   <dialog class="card-preview-dialog card-shop-dialog" id="playerCardPreviewDialog" aria-labelledby="playerCardPreviewTitle">
     <div class="card-preview-head">
-      <div><span class="dialog-kicker">CARD SHOP · FRAME MARKET</span><h2 id="playerCardPreviewTitle">PLAYER & COACH CARD SHOP</h2><p>프레임을 구매한 뒤 사진과 이름을 직접 넣어 나만의 카드를 만들 수 있습니다.</p></div>
+      <div><span class="dialog-kicker">CARD SHOP · FRAME MARKET</span><h2 id="playerCardPreviewTitle">TRANSFER MARKET</h2><p>프레임을 구매한 뒤 사진과 이름을 직접 넣어 나만의 카드를 만들 수 있습니다.</p></div>
       <button type="button" class="card-preview-close" id="playerCardPreviewClose" aria-label="닫기">×</button>
     </div>
     <div class="card-shop-grid">
@@ -6813,7 +6825,7 @@ async function refreshServerRP(){
 function rescueOpenDialog(id){
   const d=document.getElementById(id); if(!d)return false;
   try{
-    if(typeof d.showModal==='function'){ if(!d.open)d.showModal(); }
+    if(typeof d.showModal==='function'){ rescueOpenDialog("squadPickerDialog"); }
     else { d.setAttribute('open',''); d.classList.add('rescue-dialog-open-fallback'); }
   }catch(e){ d.setAttribute('open',''); d.classList.add('rescue-dialog-open-fallback'); }
   return true;
@@ -6947,24 +6959,44 @@ function editFootballTeamName(){
   if(!name){alert("팀 이름을 입력해주세요.");return;}
   st.teamName=name;saveFootballState(st);renderFootballHub();
 }
+const ROULETTE_DAILY_LIMIT=5;
+let rouletteServerUsed=0;
+let rouletteBusy=false;
+function getRouletteDailyCount(){return Math.max(0,Math.min(ROULETTE_DAILY_LIMIT,Number(rouletteServerUsed)||0));}
+function updateRouletteCounter(){
+ const btn=document.getElementById("footballRouletteBtn"), small=btn?.querySelector("small"), used=getRouletteDailyCount();
+ if(small)small.textContent=used>=ROULETTE_DAILY_LIMIT?`오늘 ${used} / ${ROULETTE_DAILY_LIMIT}회 사용 · DAILY LIMIT`:`오늘 ${used} / ${ROULETTE_DAILY_LIMIT}회 사용`;
+ if(btn)btn.classList.toggle("daily-limit",used>=ROULETTE_DAILY_LIMIT);
+}
+async function refreshRouletteStatus(){
+ if(!currentUser?.id){rouletteServerUsed=0;updateRouletteCounter();return;}
+ try{const {data,error}=await supabaseClient.rpc("rescue_roulette_status");if(error)throw error;rouletteServerUsed=Math.max(0,Math.min(ROULETTE_DAILY_LIMIT,Number(data)||0));}
+ catch(e){console.warn("Roulette status refresh skipped",e);}
+ updateRouletteCounter();
+}
+function playFootballRoulette(){
+ const used=getRouletteDailyCount();
+ if(used>=ROULETTE_DAILY_LIMIT){alert("오늘 이용 한도 5회를 모두 사용했습니다. 한국 시간 자정 이후 다시 확인할 수 있습니다.");return;}
+ alert(`오늘 이용 횟수: ${used} / ${ROULETTE_DAILY_LIMIT}`);
+}
 function footballComingSoon(title){alert(`${title}\n\n선수 데이터베이스를 연결하는 다음 업데이트에서 사용할 수 있습니다.`);}
 document.getElementById("rpHistoryBtn")?.addEventListener("click",showRpHistory);
 document.getElementById('openUserGuide')?.addEventListener('click',()=>rescueOpenDialog('userGuideDialog'));
 document.querySelectorAll('[data-close-dialog]').forEach(btn=>btn.addEventListener('click',()=>rescueCloseDialog(btn.dataset.closeDialog)));
 document.getElementById('refreshRpHistoryBtn')?.addEventListener('click',loadRpHistory);
-document.getElementById("footballEditTeamBtn").addEventListener("click",editFootballTeamName);
-document.getElementById("footballTeamHeroBtn").addEventListener("click",()=>{document.getElementById("footballTeamBtn").click();});
-document.getElementById("footballTeamBtn").addEventListener("click",openSquadEditor);
-document.getElementById("footballCollectionBtn").addEventListener("click",openPlayerCollection);
-document.getElementById("footballShopBtn").addEventListener("click",openPlayerCardShop);
-document.getElementById("footballKitBtn").addEventListener("click",()=>footballComingSoon("KIT SHOP"));
-document.getElementById("footballRouletteBtn").addEventListener("click",playFootballRoulette);
-document.getElementById("footballCoachBtn").addEventListener("click",buyCoach);
-document.getElementById("footballCoachHeroBtn").addEventListener("click",buyCoach);
-document.getElementById("footballFormationBtn").addEventListener("click",openFormationSelector);
+document.getElementById("footballEditTeamBtn")?.addEventListener("click",editFootballTeamName);
+document.getElementById("footballTeamHeroBtn")?.addEventListener("click",()=>{document.getElementById("footballTeamBtn").click();});
+document.getElementById("footballTeamBtn")?.addEventListener("click",openSquadEditor);
+document.getElementById("footballCollectionBtn")?.addEventListener("click",openPlayerCollection);
+document.getElementById("footballShopBtn")?.addEventListener("click",openPlayerCardShop);
+document.getElementById("footballKitBtn")?.addEventListener("click",()=>alert("LOGO SHOP은 다음 단계에서 로고 이미지와 구매 시스템을 연결할 예정입니다."));
+document.getElementById("footballRouletteBtn")?.addEventListener("click",playFootballRoulette);
+document.getElementById("footballCoachBtn")?.addEventListener("click",openPlayerCardShop);
+document.getElementById("footballCoachHeroBtn")?.addEventListener("click",()=>openPlayerCardShop("coach"));
+document.getElementById("footballFormationBtn")?.addEventListener("click",openFormationSelector);
 
 document.querySelectorAll("[data-side-tab]").forEach(btn=>btn.addEventListener("click",()=>setTab(btn.dataset.sideTab)));
-document.querySelectorAll("[data-side-action]").forEach(btn=>btn.addEventListener("click",()=>{setTab("football");setTimeout(()=>{const a=btn.dataset.sideAction;if(a==="team")document.getElementById("footballTeamBtn").click();if(a==="collection")document.getElementById("footballCollectionBtn").click();if(a==="shop")document.getElementById("footballShopBtn").click();if(a==="coach")document.getElementById("footballCoachBtn").click();},0);}));
+document.querySelectorAll("[data-side-action]").forEach(btn=>btn.addEventListener("click",()=>{setTab("football");setTimeout(()=>{const a=btn.dataset.sideAction;if(a==="team")document.getElementById("footballTeamBtn").click();if(a==="collection")document.getElementById("footballCollectionBtn").click();if(a==="shop")document.getElementById("footballShopBtn").click();if(a==="coach")document.getElementById("footballShopBtn")?.click();},0);}));
 
 
 /* ============ PLAYER COLLECTION + MY SQUAD ============ */
@@ -6986,7 +7018,7 @@ function assignedCardIds(){const st=squadState();return Object.values(st.squad||
 function openSquadEditor(){
  const d=document.getElementById("squadDialog"); if(!d)return;
  const st=squadState();document.getElementById("squadFormationSelect").value=st.formation||"4-3-3";
- renderSquad(); if(!d.open)d.showModal();
+ renderSquad(); rescueOpenDialog("squadDialog");
 }
 async function openPlayerCollection(){
  const d=document.getElementById("playerCollectionDialog");
@@ -7020,15 +7052,15 @@ async function openSquadPicker(position){
  squadEditingSlot=position; const d=document.getElementById("squadPickerDialog"), grid=document.getElementById("squadPickerGrid"); if(!d||!grid)return;
  document.getElementById("squadPickerPosition").textContent=`${position} 포지션에 넣을 선수를 선택하세요.`;
  const st=squadState(), assigned=assignedCardIds().filter(id=>id!==st.squad[position]), inv=getCardInventory();
- if(!inv.length){grid.innerHTML='<div class="squad-empty">구매한 선수 카드가 없습니다.<br>PLAYER SHOP에서 프레임을 구매해 주세요.</div>';} else {
+ if(!inv.length){grid.innerHTML='<div class="squad-empty">구매한 선수 카드가 없습니다.<br>TRANSFER MARKET에서 프레임을 구매해 주세요.</div>';} else {
   grid.innerHTML='';
-  for(const card of inv){const displayName=cardDisplayName(card), row=document.createElement('div');row.className='picker-card';const photo=await getCardPhotoForCard(card);row.innerHTML=`<div class="picker-thumb">${photo?`<img src="${photo}" alt="">`:''}</div><div><b>${escapeHtml(displayName)}</b><small>${CARD_FRAME_INFO[card.rarity]?.name||card.rarity}</small></div><button type="button">${assigned.includes(card.id)?'사용 중':'선택'}</button>`;const btn=row.querySelector('button');if(assigned.includes(card.id)){btn.disabled=true;btn.style.opacity='.4';}else btn.addEventListener('click',()=>{const next=squadState();next.squad[squadEditingSlot]=card.id;saveFootballState(next);d.close();renderSquad();renderFootballHub();});grid.appendChild(row);}
+  for(const card of inv){const displayName=cardDisplayName(card), row=document.createElement('div');row.className='picker-card';const photo=await getCardPhotoForCard(card);row.innerHTML=`<div class="picker-thumb">${photo?`<img src="${photo}" alt="">`:''}</div><div><b>${escapeHtml(displayName)}</b><small>${CARD_FRAME_INFO[card.rarity]?.name||card.rarity}</small></div><button type="button">${assigned.includes(card.id)?'사용 중':'선택'}</button>`;const btn=row.querySelector('button');if(assigned.includes(card.id)){btn.disabled=true;btn.style.opacity='.4';}else btn.addEventListener('click',()=>{const next=squadState();next.squad[squadEditingSlot]=card.id;saveFootballState(next);rescueCloseDialog("squadPickerDialog");renderSquad();renderFootballHub();});grid.appendChild(row);}
  }
- if(!d.open)d.showModal();
+ rescueOpenDialog("squadPickerDialog");
 }
 function clearSquad(){const st=squadState();st.squad={};saveFootballState(st);renderSquad();renderFootballHub();}
-document.getElementById("squadClose")?.addEventListener("click",()=>document.getElementById("squadDialog")?.close());
-document.getElementById("squadPickerClose")?.addEventListener("click",()=>document.getElementById("squadPickerDialog")?.close());
+document.getElementById("squadClose")?.addEventListener("click",()=>rescueCloseDialog("squadDialog"));
+document.getElementById("squadPickerClose")?.addEventListener("click",()=>rescueCloseDialog("squadPickerDialog"));
 document.getElementById("squadCollectionBtn")?.addEventListener("click",openPlayerCollection);
 document.getElementById("squadClearBtn")?.addEventListener("click",()=>{if(confirm("MY SQUAD의 모든 포지션을 비울까요?"))clearSquad();});
 document.getElementById("squadFormationSelect")?.addEventListener("change",e=>{const st=squadState();st.formation=e.target.value;saveFootballState(st);renderSquad();renderFootballHub();});
@@ -7252,7 +7284,7 @@ function openFormationSelector(){
   const st=loadFootballState(), current=st.formation||'4-3-3';
   const options=['4-3-3','4-2-3-1','4-4-2','3-4-3'];
   const pick=prompt(`FORMATION\n\n현재: ${current}\n\n1. 4-3-3\n2. 4-2-3-1\n3. 4-4-2\n4. 3-4-3\n\n번호를 선택하세요.`);
-  if(pick===null)return; const idx=Number(pick)-1; if(!Number.isInteger(idx)||!options[idx]){alert('올바른 번호를 선택해주세요.');return;} st.formation=options[idx];saveFootballState(st);renderFormation();
+  if(pick===null)return; const idx=Number(pick)-1; if(!Number.isInteger(idx)||!options[idx]){alert('올바른 번호를 선택해주세요.');return;} st.formation=options[idx];saveFootballState(st);renderFormation();renderSquad();renderFootballHub();
 }
 function renderFormation(){
   const st=loadFootballState(), formation=st.formation||'4-3-3';
