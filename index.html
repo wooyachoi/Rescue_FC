@@ -2353,6 +2353,21 @@ nav.tabs.rescue-bottom-nav{display:none!important;height:0!important;min-height:
 [data-rarity-card="coach"] .player-card-name{top:78.5%;height:6.3%;}
 </style>
 
+
+<style id="rescue-photo-matte-fix">
+/* 실제 사진이 있을 때 짙은 회색 매트/테두리가 프레임을 가리지 않도록 제거 */
+.player-photo-layer.has-photo{background:transparent!important;box-shadow:none!important;isolation:auto!important;}
+.player-photo-layer.has-photo::after{display:none!important;content:none!important;}
+.player-photo-layer.has-photo img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center center!important;border:0!important;border-radius:1.5%!important;box-shadow:none!important;}
+/* 스쿼드에서는 프레임이 최우선. 사진 홀더 자체는 완전 투명 */
+.squad-photo-holder{background:transparent!important;box-shadow:none!important;border:0!important;}
+.squad-photo-holder.has-photo{background:transparent!important;}
+.squad-photo-holder img.photo{inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;border:0!important;box-shadow:none!important;}
+/* 프레임은 항상 사진보다 위에 표시 */
+.squad-slot-card img.frame,.card-frame-image{z-index:5!important;}
+.player-photo-layer,.squad-photo-holder{z-index:1!important;}
+.player-card-name{z-index:6!important;}
+</style>
 </head>
 <body>
 
@@ -7065,7 +7080,7 @@ function renderSquad(){
    const frame=card?getFrameSrc(card.rarity):"";
    slot.innerHTML=`<div class="squad-slot-card"${card?` data-rarity-card="${card.rarity}"`:``}>${frame?`<img class="frame" src="${frame}" alt="">`:''}${card?`<div class="empty">${displayName?'':'+'}</div>`:'<div class="empty">+</div>'}${card?`<div class="squad-photo-holder"></div>`:''}</div><span class="squad-slot-name">${escapeHtml(displayName||"선수 선택")}</span><span class="squad-slot-pos">${squadPositionLabel(pos)}</span>`;
    const holder=slot.querySelector('.squad-photo-holder');
-   if(card&&holder){getCardPhotoForCard(card).then(photo=>{if(photo)holder.innerHTML=`<img class="photo" src="${photo}" alt="">`;});}
+   if(card&&holder){getCardPhotoForCard(card).then(photo=>{if(photo){holder.classList.add('has-photo');holder.innerHTML=`<img class="photo" src="${photo}" alt="">`;}});}
    slot.addEventListener("click",()=>openSquadPicker(pos)); pitch.appendChild(slot);
  });
  const placed=positions.filter(pos=>!!st.squad[pos]).length; if(countEl)countEl.textContent=placed+" / 11";
@@ -7224,7 +7239,10 @@ async function renderOwnedCoachCard(){
 function renderCardStage(stage,card,profile,photo){
   if(!stage)return;
   const layer=stage.querySelector('[data-photo-layer]'), name=stage.querySelector('[data-name-layer]');
-  if(layer)layer.innerHTML=photo?`<img src="${photo}" alt="선수 사진">`:'<div class="photo-placeholder"><span>+</span><small>PHOTO</small></div>';
+  if(layer){
+    layer.classList.toggle('has-photo',!!photo);
+    layer.innerHTML=photo?`<img src="${photo}" alt="${card?.card_type==='coach'?'감독':'선수'} 사진">`:'<div class="photo-placeholder"><span>+</span><small>PHOTO</small></div>';
+  }
   if(name)name.textContent=profile?.name||(card?.card_type==='coach'?'COACH NAME':'PLAYER NAME');
 }
 async function hydrateCardStages(){
