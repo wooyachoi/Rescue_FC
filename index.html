@@ -2243,6 +2243,7 @@ nav.tabs.rescue-bottom-nav{display:none!important;height:0!important;min-height:
   @media(max-width:760px){.rarity-preview-grid{grid-template-columns:1fr;max-height:72vh;overflow:auto}.card-preview-dialog{width:94vw}.rarity-preview-card{display:grid;grid-template-columns:115px 1fr;column-gap:12px}.rarity-preview-card .rarity-art{grid-row:1 / span 3}.rarity-preview-card h3,.rarity-preview-card .preview-meta,.rarity-preview-card .rarity-actions{grid-column:2}.rarity-preview-card h3{margin-top:4px}}
 </style>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -2812,6 +2813,7 @@ nav.tabs.rescue-bottom-nav{display:none!important;height:0!important;min-height:
     </div>
     <div class="card-preview-note">현재 선수 영입은 잠겨 있습니다. 구매하기 버튼을 눌러도 구매되지 않고 해당 카드 디자인만 확인합니다.</div>
   </dialog>
+<script>
 /* ============ V9 SUPABASE AUTH ============ */
 const SUPABASE_URL = "https://ldzajiskcgaigumxvero.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_W_kVVMU5QDh7iyw1rASxBA_3er5YPDA";
@@ -2897,26 +2899,33 @@ async function ensureProfile(user){
   return created;
 }
 let playRevealOnNextManualLogin = false;
+let authHandlingInProgress = false;
 async function handleSignedIn(user){
+  if(!user) return;
+  if(authHandlingInProgress && currentUser?.id === user.id) return;
+  authHandlingInProgress = true;
   const shouldPlayReveal = playRevealOnNextManualLogin;
   playRevealOnNextManualLogin = false;
   currentUser=user;
   try{
+    // Authentication/profile loading is the only part that can block login.
     currentProfile=await ensureProfile(user);
     if(!currentProfile){
       await supabaseClient.auth.signOut();
       throw new Error("프로필 정보를 불러오지 못했습니다. 다시 가입해 주세요.");
     }
-    await syncWordMarksForUser(user);
-    await refreshServerRP();
-    await refreshRouletteStatus();
     showAppForUser(currentProfile);
     if(shouldPlayReveal) playRescueLoginReveal();
-    updateHomeSummary();
-    loadHallOfFame();
-    scheduleAttendanceMidnight();
-    setTimeout(showAttendanceRewardPopup,250);
-    refreshPersonalBest("WORD SEARCH");
+
+    // Post-login sync must never force a valid user back to the login screen.
+    try{ await syncWordMarksForUser(user); }catch(e){ console.warn("Word mark sync skipped:",e); }
+    try{ await refreshServerRP(); }catch(e){ console.warn("RP sync skipped:",e); }
+    try{ await refreshRouletteStatus(); }catch(e){ console.warn("Roulette sync skipped:",e); }
+    try{ updateHomeSummary(); }catch(e){ console.warn("Home summary skipped:",e); }
+    try{ loadHallOfFame(); }catch(e){ console.warn("Hall of Fame load skipped:",e); }
+    try{ scheduleAttendanceMidnight(); }catch(e){ console.warn("Attendance schedule skipped:",e); }
+    try{ setTimeout(showAttendanceRewardPopup,250); }catch(e){}
+    try{ refreshPersonalBest("WORD SEARCH"); }catch(e){ console.warn("Personal best load skipped:",e); }
   }catch(e){
     currentUser=null; currentProfile=null;
     attendancePopupOpen=false;
@@ -2924,6 +2933,8 @@ async function handleSignedIn(user){
     showLogin();
     const err=document.getElementById("loginError");
     err.textContent=authErrorText(e); err.classList.add("show");
+  }finally{
+    authHandlingInProgress = false;
   }
 }
 
