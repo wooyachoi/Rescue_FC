@@ -2506,6 +2506,12 @@ nav.tabs.rescue-bottom-nav{display:none!important;height:0!important;min-height:
 @media(max-width:620px){.achievement-summary{grid-template-columns:repeat(2,1fr)}}
 </style>
 
+
+<style id="v11-emergency-sync-ui">
+.server-sync-note{font-size:9px;color:#8495a6;margin-top:5px;text-align:right}
+.server-sync-note.warn{color:#d6a55a}
+</style>
+
 </head>
 <body>
 
@@ -3299,7 +3305,7 @@ async function handleSignedIn(user){
     try{ await syncWordMarksForUser(user); }catch(e){ console.warn("Word mark sync skipped",e); }
     try{ await refreshServerRP(); }catch(e){ console.warn("RP refresh skipped",e); }
     try{ await loadServerCards(true); }catch(e){ console.warn("Card collection refresh skipped",e); }
-    try{ await syncAchievements(true); }catch(e){ console.warn("Achievement sync skipped",e); }
+    try{ syncAchievements(true).catch(e=>console.warn("Achievement sync skipped",e)); }catch(e){ console.warn("Achievement sync skipped",e); }
     try{ updateHomeSummary(); }catch(e){ console.warn("Home summary refresh skipped",e); }
     try{ loadHallOfFame(); }catch(e){ console.warn("Hall of Fame refresh skipped",e); }
     try{ scheduleAttendanceMidnight(); }catch(e){ console.warn("Attendance timer skipped",e); }
@@ -7007,9 +7013,11 @@ async function queueRpChange(delta){
     const balance=Number(data);
     if(Number.isFinite(balance)){localStorage.setItem(rpBalanceStorageKey(),String(balance));renderFootballHub();}
   }catch(e){
-    console.error('RP wallet sync failed',e);
-    alert('서버 RP 동기화에 실패했습니다. 네트워크와 Supabase SQL 적용 여부를 확인해 주세요. 화면 잔액은 서버와 다를 수 있습니다.');
+    console.warn('RP wallet sync failed',e);
+    try{ await refreshServerRP(); }catch(_){}
+    return false;
   }
+  return true;
 }
 async function refreshServerRP(){
   if(!currentUser?.id)return;
@@ -7276,6 +7284,12 @@ document.getElementById("achievementRefreshBtn")?.addEventListener("click",refre
 document.getElementById("footballRouletteBtn")?.addEventListener("click",openAchievements);
 
 document.getElementById("footballCoachHeroBtn")?.addEventListener("click",()=>openPlayerCardShop("coach"));
+
+/* ===== V11 EMERGENCY HUB BINDINGS ===== */
+document.getElementById("footballTeamBtn")?.addEventListener("click",()=>openSquadEditor());
+document.getElementById("footballCollectionBtn")?.addEventListener("click",()=>openPlayerCollection());
+document.getElementById("footballShopBtn")?.addEventListener("click",()=>openPlayerCardShop());
+
 document.getElementById("footballFormationBtn")?.addEventListener("click",openFormationSelector);
 
 document.querySelectorAll("[data-side-tab]").forEach(btn=>btn.addEventListener("click",()=>setTab(btn.dataset.sideTab)));
@@ -7328,16 +7342,30 @@ async function hydrateSquadStateFromServer(){
 
 async function openSquadEditor(){
  const d=document.getElementById("squadDialog"); if(!d)return;
- try{await loadServerCards(true);await hydrateSquadStateFromServer();}catch(e){console.warn("Squad card refresh skipped",e);}
- const st=squadState();document.getElementById("squadFormationSelect").value=st.formation||"4-3-3";
- renderSquad(); rescueOpenDialog("squadDialog");
+ rescueOpenDialog("squadDialog");
+ let st=squadState();
+ const sel=document.getElementById("squadFormationSelect");
+ if(sel)sel.value=st.formation||"4-3-3";
+ renderSquad();
+ try{
+   await loadServerCards(true);
+   await hydrateSquadStateFromServer();
+   st=squadState();
+   if(sel)sel.value=st.formation||"4-3-3";
+   renderSquad();
+ }catch(e){console.warn("Squad card refresh skipped",e);}
 }
 async function openPlayerCollection(){
  const d=document.getElementById("playerCollectionDialog");
  if(!d)return;
- try{await loadServerCards(true);}catch(e){console.warn("Collection card refresh skipped",e);}
- await renderPlayerCollectionOnly();
  rescueOpenDialog("playerCollectionDialog");
+ const list=document.getElementById("playerCollectionList");
+ if(list)list.innerHTML='<div class="owned-card-empty">카드 정보를 불러오는 중…</div>';
+ try{await loadServerCards(true);}catch(e){console.warn("Collection card refresh skipped",e);}
+ try{await renderPlayerCollectionOnly();}catch(e){
+   console.warn("Collection render skipped",e);
+   if(list)list.innerHTML='<div class="owned-card-empty">카드 정보를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</div>';
+ }
 }
 function renderSquad(){
  const st=squadState(), formation=st.formation||"4-3-3", positions=FORMATION_POSITIONS[formation]||FORMATION_POSITIONS["4-3-3"], coords=FORMATION_COORDS[formation]||FORMATION_COORDS["4-3-3"], pitch=document.getElementById("squadPitch"), list=document.getElementById("squadList"), countEl=document.getElementById("squadCount");
@@ -7536,11 +7564,18 @@ async function hydrateCardStages(){
 }
 async function openPlayerCardShop(focusRarity=null){
   const d=document.getElementById('playerCardPreviewDialog'); if(!d)return;
-  try{await loadServerCards(true);}catch(e){console.warn('Transfer market card refresh skipped',e);}
-  updateCardShopUI();
-  await hydrateCardStages();
   rescueOpenDialog('playerCardPreviewDialog');
+  try{await hydrateCardStages();}catch(e){console.warn('Static card stage hydrate skipped',e);}
   if(focusRarity)requestAnimationFrame(()=>document.querySelector(`[data-rarity-card="${focusRarity}"]`)?.scrollIntoView({behavior:'smooth',block:'center'}));
+  try{
+    await loadServerCards(true);
+    updateCardShopUI();
+    await renderOwnedCardCollection();
+    await renderOwnedCoachCard();
+  }catch(e){
+    console.warn('Transfer market card refresh skipped',e);
+    updateCardShopUI();
+  }
 }
 function closePlayerCardShop(){rescueCloseDialog('playerCardPreviewDialog');}
 async function playCardPurchaseEffect(rarity){
